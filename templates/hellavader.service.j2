@@ -1,0 +1,12 @@
+[Unit]
+Description=hellavader
+After=network.target
+
+[Service]
+User=hellavader
+ExecStart={{ hellavader_executable_path }}/hellavader
+ExecStop=/bin/kill $MAINPID
+
+[Install]
+WantedBy=multi-user.target
+

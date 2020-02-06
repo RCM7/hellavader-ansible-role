@@ -1,0 +1,29 @@
+---
+# tasks file for hellavader-ansible-role
+#
+- name: Add the user hellavader
+  user:
+    name: hellavader
+  become: true
+
+- name: Download and unarchive hellavader
+  unarchive:
+    src: "https://github.com/RCM7/hellavader/releases/download/{{ hellavader_version }}/hellavader-linux-amd64.tar.gz"
+    dest: "{{ hellavader_executable_path }}"
+    remote_src: yes
+    mode: 0755
+    owner: hellavader
+  become: true
+
+- name: Hellavader systemd service
+  template:
+    src: hellavader.service.j2
+    dest: "/etc/systemd/system/hellavader.service"
+  become: true
+
+- name: Enable custom service
+  systemd:
+    name: hellavader
+    enabled: yes
+    state: started
+  become: true
